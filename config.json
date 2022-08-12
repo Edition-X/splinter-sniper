@@ -1,0 +1,26 @@
+{
+    "global_params": {
+        "currency": "DEC",
+        "auto_set_buy_price": true,
+        "buy_pct_below_market": 10,
+        "sell_pct_above_buy": 10,
+        "tip_pct_of_profit": 0
+    },
+    "buyconfigs": [
+        {
+            "comment": "golden chicken only, sell for 10% more",
+            "cards": ["131"],
+            "editions": [],
+            "rarities": [],
+            "elements": [],
+            "types": [],
+            "min_bcx": 2,
+            "min_cp_per_usd": 0,
+            "max_price": 40,
+            "max_quantity": 5,
+            "gold_only": true,
+            "exclude_cl": false,
+            "sell_for_pct_more": 10
+        }
+    ]
+}
