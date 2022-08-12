@@ -224,6 +224,7 @@ class SplinterlandsApiClient(object):
                 buyconfig["max_quantity"] = buyconfig["max_quantity"] - 1
                 currently_buying.append({"id": trx_id, "buyconfig_idx": buyconfigs.index(buyconfig), "cardid": str(listing["cards"])[2:-2]})
                 logger.info("Card ID: " + cardid + " IS desired at $" + str(price))
+                logger.debug("Exit check_desired")
                 return True
         logger.info("Card ID: " + cardid + " is not desired at $" + str(price))
         logger.debug("Exit check_desired")
@@ -403,7 +404,9 @@ if __name__ == '__main__':
     ## Setup logging
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.INFO)
+    if "DEBUG" in os.environ:
+        logger.setLevel(logging.DEBUG)
     filename = (f'transactions-{datetime.now():%Y-%m-%w}.log')
     formatter = logging.Formatter("%(asctime)s - %(message)s", "%Y-%m-%d:%H-%M-%S")
     fileHandler = TimedRotatingFileHandler(os.path.join(THIS_FOLDER, filename),  when='midnight')
