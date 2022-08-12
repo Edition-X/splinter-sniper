@@ -204,22 +204,22 @@ You can set the following parameters:
 
 Download [Git](https://git-scm.com/) and clone the repo: 
 
-      ```sh
+      ```
       git clone https://github.com/edition-x/splinter-sniper.git
       ```
 Go to repo directory
-      ```sh
+      ```
       cd splinter-sniper
       ```
 
 Create and activate a virtual environment
-      ```sh
+      ```
       python3 -m venv venv
       source venv/bin/activate
       ```
 
 Set environment variables for HIVE_USERNAME & HIVE_ACTIVE_KEY
-      ```sh
+      ```
       export HIVE_USERNAME=edition-x
       export HIVE_ACTIVE_KEY=<YOUR_ACTIVE_KEY>
       ```
@@ -227,10 +227,10 @@ Set environment variables for HIVE_USERNAME & HIVE_ACTIVE_KEY
 Update config.json
 
 Run the script
-      ```sh
+      ```
       python3 Splinterbuyer.py
       ```
-```
+
 Use my referral links for Splinterlands!
 
 https://splinterlands.com?ref=edition-x
