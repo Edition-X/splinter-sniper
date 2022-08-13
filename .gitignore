@@ -1,4 +1,5 @@
 # Byte-compiled / optimized / DLL files
+.docker
 backupSplintersniper.py
 .envrc
 __pycache__/
