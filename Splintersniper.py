@@ -12,28 +12,6 @@ import logging
 import time
 import enum
 
-class COLORS(enum.Enum):
-    {
-        "Red": "fire",
-        "Blue": "water",
-        "Green": "earth",
-        "White": "life",
-        "Black": "death",
-        "Gold": "dragon",
-        "Gray": "neutral"
-    }
-
-class EDITIONS(enum.Enum):
-    {
-        "alpha": 0,
-        "beta": 1,
-        "promo": 2,
-        "reward": 3,
-        "untamed": 4,
-        "dice": 5,
-        "chaos": 7
-    }
-
 class SplinterlandsApiClient(object):
 
     def __init__(self) -> None:
@@ -110,7 +88,8 @@ class SplinterlandsApiClient(object):
 
     def _calculate_bcx_from_cardID(self, cardid):
         logger.debug("Enter calculate_bcx_from_cardID")
-        logger.info(url_card_lookup + str(cardid))
+        logger.debug(url_card_lookup + str(cardid))
+        logger.info("Multi BCX card")
         response = requests.request("GET", url_card_lookup + str(cardid), headers=self._get_headers())
         logger.debug(f"response: {response}")
         card = json.loads(str(response.text))[0]
@@ -308,7 +287,10 @@ class SplinterlandsApiClient(object):
             logger.info("checking prices...")
             response = requests.request("GET", url_prices, headers=self._get_headers())
             logger.debug(f"response: {response}")
-            cardsjson = json.loads(str(response.text))
+            try:
+                cardsjson = json.loads(str(response.text))
+            except Exception as e:
+                logger.exception("error occured while checking prices with cardsjson: "  + repr(e))
             logger.debug(f"cardsjson: {cardsjson}")
             for buyconfig in buyconfigs:
               for card in cardsjson:
@@ -345,18 +327,38 @@ def get_cards_to_buy():
       3: "epic",
       4: "legendary"
     }
+
+    colors = {
+      "Red": "fire",
+      "Blue": "water",
+      "Green": "earth",
+      "White": "life",
+      "Black": "death",
+      "Gold": "dragon",
+      "Gray": "neutral"
+    }
+
+    editions = {
+      "alpha": 0,
+      "beta": 1,
+      "promo": 2,
+      "reward": 3,
+      "untamed": 4,
+      "dice": 5,
+      "chaos": 7
+    }
     for buyconfig in buyconfigs:
         if(buyconfig["exclude_cl"]):
             cards_tmp = [card for card in cardsjson if rarities[card["rarity"]] in buyconfig["rarities"]
-            and COLORS[str(card["color"])] in buyconfig["elements"]
+            and colors[str(card["color"])] in buyconfig["elements"]
             and str(card["type"]).lower() in str(buyconfig["types"]).lower() and int(card["id"]) < 330]
         else:
             cards_tmp = [card for card in cardsjson if rarities[card["rarity"]] in buyconfig["rarities"]
-            and COLORS[str(card["color"])] in buyconfig["elements"]
+            and colors[str(card["color"])] in buyconfig["elements"]
             and str(card["type"]).lower() in str(buyconfig["types"]).lower()]
         all_eds = []
         for ed in buyconfig["editions"]:
-            current_ed = [str(card["id"]) for card in cards_tmp if str(EDITIONS[str(ed)]) in card["editions"]]
+            current_ed = [str(card["id"]) for card in cards_tmp if str(editions[str(ed)]) in card["editions"]]
             all_eds = all_eds + current_ed
         if len(buyconfig["cards"]) == 0:
             buyconfig["cards"] =  all_eds
