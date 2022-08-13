@@ -164,9 +164,9 @@ You can set the following parameters:
 
     Example, buy 5 cards:
 
-        ```
-        "max_quantity": 5
-        ```
+      ```
+      "max_quantity": 5
+      ```
 11. `gold_only`: If this is set to true, the bot will only  buy gold foil cards.
 
     Example, buy only gold foil cards:
@@ -178,9 +178,9 @@ You can set the following parameters:
  
      Example, don't buy CL (reward) cards:
 
-          ```
-          "exclude_cl": true
-          ```
+      ```
+      "exclude_cl": true
+      ```
 
 13. `sell_for_pct_more`: If you want the bot to put the cards on the market immediately after buying, you can use this parameter. The bot will sell the card for x   percent more than the buy price. For example, if the card is bought for 10$ and "buy_for_pct_more" is set to 10, the bot will list the card for 11$
 
@@ -189,47 +189,52 @@ You can set the following parameters:
 
      Example, sell for 10% higher than buy price:
 
-           ```
-           "sell_for_pct_more": 10
-           ```
+      ```
+      "sell_for_pct_more": 10
+      ```
 
      Example 2, don't sell cards:
 
-           ```
-           "sell_for_pct_more": 0
-           ```
+      ```
+      "sell_for_pct_more": 0
+      ```
 
 
 ### How to Run
 
 Download [Git](https://git-scm.com/) and clone the repo: 
+```
+git clone https://github.com/edition-x/splinter-sniper.git
+```
+     
+Go to repo directory:
+```
+cd splinter-sniper
+```
 
-      ```
-      git clone https://github.com/edition-x/splinter-sniper.git
-      ```
-Go to repo directory
-      ```
-      cd splinter-sniper
-      ```
-
-Create and activate a virtual environment
-      ```
-      python3 -m venv venv
-      source venv/bin/activate
-      ```
+Create and activate a virtual environment:
+```
+python3 -m venv venv
+source venv/bin/activate
+```
 
 Set environment variables for HIVE_USERNAME & HIVE_ACTIVE_KEY
-      ```
-      export HIVE_USERNAME=edition-x
-      export HIVE_ACTIVE_KEY=<YOUR_ACTIVE_KEY>
-      ```
+```
+export HIVE_USERNAME=edition-x
+export HIVE_ACTIVE_KEY=<YOUR_ACTIVE_KEY>
+```
+
+Install the requirements
+```
+python3 -m pip install -r requirements.txt
+```
 
 Update config.json
 
-Run the script
-      ```
-      python3 Splinterbuyer.py
-      ```
+Run the script:
+```
+python3 main.py
+```
 
 Use my referral links for Splinterlands!
 
