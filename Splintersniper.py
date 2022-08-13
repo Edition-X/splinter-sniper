@@ -10,7 +10,6 @@ import json
 import requests
 import logging
 import time
-import enum
 
 class SplinterlandsApiClient(object):
 
