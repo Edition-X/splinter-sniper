@@ -1,4 +1,5 @@
 # Byte-compiled / optimized / DLL files
+logs/*.log
 .docker
 backupSplintersniper.py
 .envrc
