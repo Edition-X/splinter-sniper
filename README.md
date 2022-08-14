@@ -4,9 +4,8 @@
     <img src="docs/images/logo.svg" alt="Logo" width="100" height="100">
   </a>
 </h1>
-
+<div align="center"><h1>splinter-sniper</h1></div>
 <div align="center">
-  splinter-sniper
   <a href="https://hub.docker.com/r/danops/splinter-sniper"><img src="https://img.shields.io/docker/pulls/danops/splinter-sniper?style=plastic" alt="Docker Hub Pulls"></a> <a href="https://github.com/Edition-X/splinter-sniper/releases/tag/v1.3.0-alpha"><img src="https://img.shields.io/docker/v/danops/splinter-sniper/v1.3.0-alpha?label=Latest%20Release&style=plastic" alt="Latest Release"></a> <a href="https://github.com/Edition-X/splinter-sniper/stargazers"><img src="https://img.shields.io/github/stars/Edition-X/splinter-sniper?style=social" alt="Stargazers on Github"></a>
   <br />
   <a href="#about"><strong>Explore the docs »</strong></a>
@@ -25,7 +24,7 @@
 [![Project license](https://img.shields.io/github/license/Edition-X/splinter-sniper.svg?style=flat-square)](LICENSE)
 
 [![Pull Requests welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square)](https://github.com/Edition-X/splinter-sniper/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
-[![code with love by Edition-X](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-Edition-X-ff1414.svg?style=flat-square)](https://github.com/Edition-X)
+[![code with love by Edition-X](https://img.shields.io/badge/Made%20with%20♥%20by-%20Edition--X-green?style=flat-square)](https://github.com/Edition-X)
 
 </div>
 
@@ -33,11 +32,13 @@
 <summary>Table of Contents</summary>
 
 - [About](#about)
-  - [Built With](#built-with)
 - [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
+  - [Configuration](#configuration---configjson)
+    - [Global Parameters](#global-parameters)
+    - [Buy Configuration](#buy-configurations-buyconfigs)
+- [Clone the repo](#clone-the-repo)
+- [Run with docker-compose (Recommended)](#run-with-docker-compose-recommended)
+- [Run with python3 locally](#run-with-python3-locally)
 - [Roadmap](#roadmap)
 - [Support](#support)
 - [Project assistance](#project-assistance)
@@ -69,7 +70,7 @@ Inside the config.json file you can set parameters for the bot.
 
 You can set the following parameters:
 
-#### global_params
+#### Global Parameters
 
 1. `currency`: Either "DEC" or "CREDITS".
    ```
@@ -110,7 +111,7 @@ You can set the following parameters:
     "tip_pct_of_profit": 50
     ```
    
-#### buyconfigs
+#### Buy configurations (buyconfigs)
 
 1. `comment`: This field is there to name your bids. You can write whatever you want here, the bot will ignore it.
               
@@ -303,6 +304,8 @@ Run the script:
 python3 main.py
 ```
 <br />
+<hr />
+
 ## Roadmap
 
 See the [open issues](https://github.com/Edition-X/splinter-sniper/issues) for a list of proposed features (and known issues).
