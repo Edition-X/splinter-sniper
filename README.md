@@ -37,6 +37,7 @@
     - [Global Parameters](#global-parameters)
     - [Buy Configuration](#buy-configurations-buyconfigs)
 - [Clone the repo](#clone-the-repo)
+- [Environment Variables](#environment-variables)
 - [Run with docker-compose (Recommended)](#run-with-docker-compose-recommended)
 - [Run with python3 locally](#run-with-python3-locally)
 - [Roadmap](#roadmap)
@@ -261,8 +262,9 @@ You can set the following parameters:
       ```
       "sell_for_pct_more": 0
       ```
+<hr />
 
-### Clone the repo
+## Clone the repo
 
 Download [Git](https://git-scm.com/) and clone the repo: 
 ```
@@ -270,11 +272,20 @@ git clone https://github.com/edition-x/splinter-sniper.git
 ```
      
 Go to repo directory:
+
 ```
 cd splinter-sniper
 ```
 
-### Run with docker-compose (Recommended)
+## Environment Variables
+Set environment variables for HIVE_USERNAME & HIVE_ACTIVE_KEY
+
+```
+export HIVE_USERNAME=edition-x
+export HIVE_ACTIVE_KEY=<YOUR_ACTIVE_KEY>
+```
+
+## Run with docker-compose (Recommended)
 
 ```
 docker-compose up -d
@@ -286,12 +297,6 @@ Create and activate a virtual environment:
 ```
 python3 -m venv venv
 source venv/bin/activate
-```
-
-Set environment variables for HIVE_USERNAME & HIVE_ACTIVE_KEY
-```
-export HIVE_USERNAME=edition-x
-export HIVE_ACTIVE_KEY=<YOUR_ACTIVE_KEY>
 ```
 
 Install the requirements
