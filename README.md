@@ -1,7 +1,7 @@
 <h1 align="center">
   <a href="https://github.com/Edition-X/splinter-sniper">
     <!-- Please provide path to your logo here -->
-    <img src="docs/images/logo.png" alt="Logo" width="1000" height="693">
+    <img src="docs/images/logo.png" alt="Logo" width="900" height="624">
   </a>
 </h1>
 <div align="center"><h1>splinter-sniper</h1></div>
