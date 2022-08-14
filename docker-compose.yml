@@ -12,3 +12,6 @@ services:
       - type: bind
         source: ./logs
         target: /usr/app/src/logs
+      - type: bind
+        source: ./config.json
+        target: /usr/app/src/config.json
