@@ -1,0 +1,14 @@
+---
+version: "2.1"
+services:
+  splinter-sniper:
+    image: danops/splinter-sniper:${TAG}
+    container_name: splinter-sniper
+    environment:
+      - HIVE_USERNAME=$HIVE_USERNAME
+      - HIVE_ACTIVE_KEY=$HIVE_ACTIVE_KEY
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ./logs
+        target: /usr/app/src/logs
