@@ -1,6 +1,6 @@
 # splinter-sniper
 
-<a href="https://hub.docker.com/r/danops/splinter-sniper"><img src="https://img.shields.io/docker/pulls/danops/splinter-sniper?style=plastic" alt="Docker Hub Pulls">
+<a href="https://hub.docker.com/r/danops/splinter-sniper"><img src="https://img.shields.io/docker/pulls/danops/splinter-sniper?style=plastic" alt="Docker Hub Pulls"><\a> <a href="https://github.com/Edition-X/splinter-sniper/releases/latest"><img src="https://img.shields.io/docker/v/danops/splinter-sniper/latest?label=Latest%20Release&style=plastic" alt="Latest Release"></a>
 
 A Python bot to monitor the Hive blockchain and snipe cards that are underprice.
 
