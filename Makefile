@@ -5,11 +5,11 @@ NAME := "danops/splinter-sniper"
 all: build run
 
 build:
-	docker build -t $(NAME):$(TAG) .
+	docker build -t $(NAME):$(TAG) -t $(NAME):latest .
 
 .PHONEY: push
 push:
-	docker push $(NAME):$(TAG)
+	docker push $(NAME):$(TAG) && docker push $(NAME):latest
 
 .PHONEY: run
 run:

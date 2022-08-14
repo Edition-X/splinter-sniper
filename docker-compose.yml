@@ -2,7 +2,7 @@
 version: "2.1"
 services:
   splinter-sniper:
-    image: danops/splinter-sniper:${TAG}
+    image: danops/splinter-sniper
     container_name: splinter-sniper
     environment:
       - HIVE_USERNAME=$HIVE_USERNAME
