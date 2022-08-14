@@ -7,6 +7,7 @@ services:
     environment:
       - HIVE_USERNAME=$HIVE_USERNAME
       - HIVE_ACTIVE_KEY=$HIVE_ACTIVE_KEY
+      - TZ=Europe/Madrid
     restart: unless-stopped
     volumes:
       - type: bind
