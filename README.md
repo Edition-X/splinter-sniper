@@ -6,7 +6,7 @@
 </h1>
 <div align="center"><h1>splinter-sniper</h1></div>
 <div align="center">
-  <a href="https://hub.docker.com/r/danops/splinter-sniper"><img src="https://img.shields.io/docker/pulls/danops/splinter-sniper?style=plastic" alt="Docker Hub Pulls"></a> <a href="https://github.com/Edition-X/splinter-sniper/releases/tag/v1.3.0-alpha"><img src="https://img.shields.io/docker/v/danops/splinter-sniper/v1.3.0-alpha?label=Latest%20Release&style=plastic" alt="Latest Release"></a> <a href="https://github.com/Edition-X/splinter-sniper/stargazers"><img src="https://img.shields.io/github/stars/Edition-X/splinter-sniper?style=social" alt="Stargazers on Github"></a>
+  <a href="https://hub.docker.com/r/danops/splinter-sniper"><img src="https://img.shields.io/docker/pulls/danops/splinter-sniper?style=plastic" alt="Docker Hub Pulls"></a> <a href="https://github.com/Edition-X/splinter-sniper/releases/tag/v1.3.2-alpha"><img src="https://img.shields.io/docker/v/danops/splinter-sniper/v1.3.2-alpha?label=Latest%20Release&style=plastic" alt="Latest Release"></a> <a href="https://github.com/Edition-X/splinter-sniper/stargazers"><img src="https://img.shields.io/github/stars/Edition-X/splinter-sniper?style=social" alt="Stargazers on Github"></a>
   <br />
   <a href="#about"><strong>Explore the docs »</strong></a>
   <br />
