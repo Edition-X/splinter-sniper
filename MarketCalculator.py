@@ -48,7 +48,7 @@ class MarketCalculator:
         alpha_bcx = 0
         alpha_dec = 0
         alpha_xp = 0
-        if card["alpha_xp"] != None:
+        if alpha_xp in card:
             alpha_xp = card["alpha_xp"]
             logger.debug(f"alpha_xp: {alpha_xp}")
         xp = max(card["xp"] - alpha_xp, 0)
@@ -119,7 +119,7 @@ class MarketCalculator:
         logger.debug("Exit calculate_bcx_from_cardID")
         return self._calculate_bcx_from_card(card, cardid)
 
-    def _calc_cp_per_usd(self,  price_usd, cardid):
+    def _calc_cp_per_usd(self, cardid, price_usd):
         logger.debug("Enter calc_cp_per_usd")
         response = requests.request("GET", self.url_card_lookup + str(cardid), headers=self._get_headers())
         logger.debug(f"response: {response}")
@@ -221,11 +221,11 @@ class MarketCalculator:
             and (buyconfig["min_bcx"] == 0 or self._calculate_bcx_from_cardID(str(listing["cards"])[2:-2]) >= buyconfig["min_bcx"])
             and (buyconfig["min_cp_per_usd"] == 0 or self._calc_cp_per_usd(str(listing["cards"])[2:-2], price) >= buyconfig["min_cp_per_usd"])):
                 buyconfig["max_quantity"] = buyconfig["max_quantity"] - 1
-                self.currently_buying.append({"id": trx_id, "buyconfig_idx": self.buyconfigs.index(buyconfig), "cardid": str(listing["cards"])[2:-2]})
+                self.currently_buying.append({"id": trx_id, "buyconfig_idx": self.buyconfigs.index(buyconfig), "cardid": str(listing["cards"])[2:-2], "price": str(price)})
                 logger.info("Card ID: " + cardid + " IS desired at $" + str(price))
                 logger.debug("Exit check_desired")
                 return True
-        logger.info("Card ID: " + cardid + " is not desired at $" + str(price))
+        logger.debug("Card ID: " + cardid + " is not desired at $" + str(price))
         logger.debug("Exit check_desired")
         return False
 
