@@ -43,7 +43,7 @@ class MarketChecker:
                 for buy in self.currently_buying:
                   if((str(buy["id"])) in buydata["items"]):
                     logger.info("bought card " + str(buy["cardid"]) +  " for: " + str(res["total_usd"]) + "$")
-                    if self.auto_set_buy_price:
+                    if self.auto_set_buy_price and self.buyconfigs[buy["buyconfig_idx"]]["sell_for_pct_more"] > 0:
                       new_price = float(res["total_usd"])  + (float(res["total_usd"]) * (self.sellpct / 100))
                       logger.debug(f"new_price: {new_price}")
                       jsondata = '{"cards":["' + str(buy["cardid"]) + '"],"currency":"USD","price":' + str(new_price) +',"fee_pct":500}'
