@@ -1,5 +1,5 @@
 # Byte-compiled / optimized / DLL files
-backup_config.json
+config.json
 .DS_Store
 logs/*.log
 .docker
