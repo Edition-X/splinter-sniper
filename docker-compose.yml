@@ -1,5 +1,5 @@
 ---
-version: "2.1"
+version: "3"
 services:
   splinter-sniper:
     image: danops/splinter-sniper
@@ -8,6 +8,12 @@ services:
       - HIVE_USERNAME=$HIVE_USERNAME
       - HIVE_ACTIVE_KEY=$HIVE_ACTIVE_KEY
       - TZ=Europe/Madrid
+      - OTEL_SERVICE_NAME=splinter-sniper
+      - OTEL_RESOURCE_ATTRIBUTES=app=splinter-sniper
+      - OTEL_EXPORTER_OTLP_TRACES_PROTOCOL=grpc
+      - OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://otel-collector:4317
+      - OTEL_PROPAGATORS=tracecontext
+
     restart: unless-stopped
     volumes:
       - type: bind
@@ -16,3 +22,14 @@ services:
       - type: bind
         source: ./config.json
         target: /usr/app/src/config.json
+
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    container_name: otel-collector
+    command: [ "--config=/etc/otel-collector.yaml" ]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector.yaml
+    ports:
+      - "4318:4318"
+      - "4317:4317"
+    restart: unless-stopped
