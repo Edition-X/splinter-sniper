@@ -26,6 +26,10 @@ services:
   otel-collector:
     image: otel/opentelemetry-collector:latest
     container_name: otel-collector
+    environment:
+      - TEMPO_USERNAME=$TEMPO_USERNAME
+      - GRAFANA_KEY=$GRAFANA_KEY
+      - TEMPO_BASIC_AUTH=$TEMPO_BASIC_AUTH
     command: [ "--config=/etc/otel-collector.yaml" ]
     volumes:
       - ./otel-collector-config.yaml:/etc/otel-collector.yaml

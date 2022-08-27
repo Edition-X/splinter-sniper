@@ -10,13 +10,17 @@ processors:
 exporters:
   logging:
     loglevel: debug
+  otlp:
+    endpoint: tempo-us-central1.grafana.net:443
+    headers:
+      authorization: Basic ${TEMPO_BASIC_AUTH}
 
 service:
   pipelines:
     traces:
       receivers: [otlp]
       processors: [batch]
-      exporters: [logging]
+      exporters: [logging, otlp]
     metrics:
       receivers: [otlp]
       exporters: [logging]
