@@ -8,6 +8,7 @@ import os
 import json
 import time
 
+
 def get_config_vars():
     logger.debug("Enter get_config_vars")
     f = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json'))
@@ -22,54 +23,56 @@ def get_config_vars():
     logger.debug("Exit get_config_vars")
     return buyconfigs, currency, auto_set_buy_price, buypct, sellpct, tip_pct
 
+
 def get_cards_to_buy(buyconfigs, cardsjson):
     logger.debug("Enter get_cards_to_buy")
     rarities = {
-      1: "common",
-      2: "rare",
-      3: "epic",
-      4: "legendary"
+        1: "common",
+        2: "rare",
+        3: "epic",
+        4: "legendary"
     }
 
     colors = {
-      "Red": "fire",
-      "Blue": "water",
-      "Green": "earth",
-      "White": "life",
-      "Black": "death",
-      "Gold": "dragon",
-      "Gray": "neutral"
+        "Red": "fire",
+        "Blue": "water",
+        "Green": "earth",
+        "White": "life",
+        "Black": "death",
+        "Gold": "dragon",
+        "Gray": "neutral"
     }
 
     editions = {
-      "alpha": 0,
-      "beta": 1,
-      "promo": 2,
-      "reward": 3,
-      "untamed": 4,
-      "dice": 5,
-      "chaos": 7
+        "alpha": 0,
+        "beta": 1,
+        "promo": 2,
+        "reward": 3,
+        "untamed": 4,
+        "dice": 5,
+        "chaos": 7
     }
     for buyconfig in buyconfigs:
         if(buyconfig["exclude_cl"]):
             cards_tmp = [card for card in cardsjson if rarities[card["rarity"]] in buyconfig["rarities"]
-            and colors[str(card["color"])] in buyconfig["elements"]
-            and str(card["type"]).lower() in str(buyconfig["types"]).lower() and int(card["id"]) < 330]
+                         and colors[str(card["color"])] in buyconfig["elements"]
+                         and str(card["type"]).lower() in str(buyconfig["types"]).lower() and int(card["id"]) < 330]
         else:
             cards_tmp = [card for card in cardsjson if rarities[card["rarity"]] in buyconfig["rarities"]
-            and colors[str(card["color"])] in buyconfig["elements"]
-            and str(card["type"]).lower() in str(buyconfig["types"]).lower()]
+                         and colors[str(card["color"])] in buyconfig["elements"]
+                         and str(card["type"]).lower() in str(buyconfig["types"]).lower()]
         all_eds = []
         for ed in buyconfig["editions"]:
             current_ed = [str(card["id"]) for card in cards_tmp if str(editions[str(ed)]) in card["editions"]]
             all_eds = all_eds + current_ed
         if len(buyconfig["cards"]) == 0:
-            buyconfig["cards"] =  all_eds
+            buyconfig["cards"] = all_eds
     logger.debug("Exit get_cards_to_buy")
     return
 
+
 def main():
-    ## Get configuration variables from config.json
+    # Get configuration variables from config.json
     buyconfigs, currency, auto_set_buy_price, buypct, sellpct, tip_pct = get_config_vars()
     currently_buying = []
     currently_selling = []
@@ -81,40 +84,51 @@ def main():
     stream = blockchain.stream()
     checker = MarketChecker(buyconfigs, currently_buying, auto_set_buy_price, sellpct, currently_selling, tip_pct)
     last_checked = time.time()
+    buying_dict = {"block_num": 0, "json_data": {}}
     for op in stream:
+        if buying_dict["block_num"] - op["block_num"] >= 3:
+            hive.custom_json('sm_market_purchase', json_data=buying_dict["json_data"],
+                             required_auths=[HIVE_USERNAME])
+
         if(time.time() - last_checked) > 600:
             logger.info(time.time())
             logger.info(last_checked)
             if auto_set_buy_price:
-              calculator.check_prices()
+                calculator.check_prices()
             checker.check_for_sold()
             last_checked = time.time()
         if(op["type"] == 'custom_json'):
             if op["id"] == 'sm_sell_cards' and HIVE_USERNAME not in op["required_auths"]:
-              try:
-                  listings = []
-                  if(op["json"][:1] == '[' ):
-                      str_listings = op["json"].strip().replace(" ", "").replace("'", "")
-                      listings = json.loads(str_listings)
-                  else:
-                      listings.append(json.loads(op["json"]))
-                  for index, listing in enumerate(listings):
-                    price = float(listing["price"])
-                    cardid = str(listing["cards"])[5:-13]
-                    if (calculator.calculate_desired(listing, op["trx_id"] + "-" + str(index), price, cardid) == True):
-                        id = op["trx_id"]
-                        jsondata_old = '{"items":["'+ str(id) + '-' + str(index) + '"], "price":' + str(price) +', "currency":"' + str(currency) + '"}'
-                        hive.custom_json('sm_market_purchase', json_data=jsondata_old, required_auths=[HIVE_USERNAME])
-                        logger.info(str(listing["cards"])[2] + "-" + cardid + " $" + str(price) + " - buying...")
-              except Exception as e:
-                  logger.exception("error occured while checking cards: "  + repr(e))
+                try:
+                    listings = []
+                    if(op["json"][:1] == '['):
+                        str_listings = op["json"].strip().replace(" ", "").replace("'", "")
+                        listings = json.loads(str_listings)
+                    else:
+                        listings.append(json.loads(op["json"]))
+                    for index, listing in enumerate(listings):
+                        price = float(listing["price"])
+                        cardid = str(listing["cards"])[5:-13]
+                        if (calculator.calculate_desired(listing, op["trx_id"] + "-" + str(index), price, cardid) == True):
+                            id = op["trx_id"]
+                            jsondata_old = '{"items":["' + str(id) + '-' + str(index) + '"], "price":' + str(
+                                price) + ', "currency":"' + str(currency) + '"}'
+
+                            buying_dict["block_num"] = op["block_num"]
+                            buying_dict["json_data"] = jsondata_old
+
+                            logger.info(str(listing["cards"])[2] + "-" + cardid + " $" + str(price) + " - buying...")
+
+                except Exception as e:
+                    logger.exception("error occured while checking cards: " + repr(e))
             else:
-              if(len(currently_buying) > 0 and HIVE_USERNAME in op["required_auths"]):
-                  try:
-                      t = Thread(target = checker.check_buying_result(op))
-                      t.start()
-                  except Exception as e:
-                      logger.exception("error occured while buying: "  + repr(e))
+                if(len(currently_buying) > 0 and HIVE_USERNAME in op["required_auths"]):
+                    try:
+                        t = Thread(target=checker.check_buying_result(op))
+                        t.start()
+                    except Exception as e:
+                        logger.exception("error occured while buying: " + repr(e))
+
 
 if __name__ == '__main__':
     main()
