@@ -8,7 +8,7 @@ class MarketCalculator:
 
     def __init__(self, buyconfigs, currently_buying, auto_set_buy_price, buypct):
 
-        self.url_card_lookup    = "https://steemmonsters.com/cards/find?ids="
+        self.url_card_lookup    = "https://api.splinterlands.io/cards/find?ids="
         self.settings           = self.get_settings()
         self.cardsjson          = self.get_cards()
         self.buyconfigs         = buyconfigs
@@ -34,7 +34,7 @@ class MarketCalculator:
     def get_settings(self):
         try:
             settings = json.loads(requests.request("GET",
-                            "https://steemmonsters.com/settings",
+                            "https://api.splinterlands.io/settings",
                             headers=self._get_headers()
                             ).text)
             return settings
