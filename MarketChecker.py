@@ -65,15 +65,10 @@ class MarketChecker:
               else:
                 for buy in self.currently_buying:
                   if((str(buy["id"])) in buydata["items"]):
-                    if str(data["trx_info"]["error"]) == "You cannot buy cards unless they have been on the market for 3 blocks.":
-                      logger.info("Retrying after 3 blocks...")
-                      jsondata_old = '{"items":["'+ str(buy["id"]) + '"], "price":' + str(buy["price"]) +', "currency":"DEC"}'
-                      hive.custom_json('sm_market_purchase', json_data=jsondata_old, required_auths=[HIVE_USERNAME])
-                    else:
-                      self.buyconfigs[buy["buyconfig_idx"]]["max_quantity"] = self.buyconfigs[buy["buyconfig_idx"]]["max_quantity"] + 1
-                      logger.error("buy failed: " + str(data["trx_info"]["error"]))
-                      self.currently_buying.remove(buy)
-                      logger.debug("Exit check_buying_result")
+                    self.buyconfigs[buy["buyconfig_idx"]]["max_quantity"] = self.buyconfigs[buy["buyconfig_idx"]]["max_quantity"] + 1
+                    logger.error("buy failed: " + str(data["trx_info"]["error"]))
+                    self.currently_buying.remove(buy)
+                    logger.debug("Exit check_buying_result")
             else:
               n -= 1
               time.sleep(1)
