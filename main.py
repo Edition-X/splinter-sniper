@@ -85,10 +85,14 @@ def main():
     checker = MarketChecker(buyconfigs, currently_buying, auto_set_buy_price, sellpct, currently_selling, tip_pct)
     last_checked = time.time()
     buying_dict = {"block_num": 0, "json_data": {}}
+    purchaseOrderFlag = 0
     for op in stream:
-        if buying_dict["block_num"] - op["block_num"] >= 3:
-            hive.custom_json('sm_market_purchase', json_data=buying_dict["json_data"],
-                             required_auths=[HIVE_USERNAME])
+        newBlock = op["block_num"] - buying_dict["block_num"]
+        if buying_dict["block_num"] != 0:
+            if newBlock >= 3 and purchaseOrderFlag == 0:
+                hive.custom_json('sm_market_purchase', json_data=buying_dict["json_data"],
+                                 required_auths=[HIVE_USERNAME])
+                purchaseOrderFlag = 1
 
         if(time.time() - last_checked) > 600:
             logger.info(time.time())
@@ -118,6 +122,7 @@ def main():
                             buying_dict["json_data"] = jsondata_old
 
                             logger.info(str(listing["cards"])[2] + "-" + cardid + " $" + str(price) + " - buying...")
+                            purchaseOrderFlag = 0
 
                 except Exception as e:
                     logger.exception("error occured while checking cards: " + repr(e))
