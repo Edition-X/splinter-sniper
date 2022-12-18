@@ -1,47 +1,21 @@
 #!/usr/bin/env python3
 from setup_logger import logger
+from SplinterlandsAPI import SplinterlandsAPI
 import json
 import requests
 import sys
 
 class MarketCalculator:
+    
+    api = SplinterlandsAPI()
 
-    def __init__(self, buyconfigs, currently_buying, auto_set_buy_price, buypct):
+    def __init__(self, buyconfigs, currently_buying, auto_set_buy_price, buypct, settings):
 
-        self.url_card_lookup    = "https://api.splinterlands.io/cards/find?ids="
-        self.settings           = self.get_settings()
-        self.cardsjson          = self.get_cards()
         self.buyconfigs         = buyconfigs
         self.currently_buying   = currently_buying
         self.auto_set_buy_price = auto_set_buy_price
         self.buypct             = buypct
-
-    def _get_headers(self):
-        return {
-        }
-
-    def get_cards(self):
-        try:
-            cardsjson = json.loads(requests.request("GET",
-                            "https://api.splinterlands.io/cards/get_details",
-                            headers=self._get_headers()
-                            ).text)
-            return cardsjson
-        except Exception as e:
-            logger.exception("error getting cards: "  + repr(e))
-            sys.exit(1)
-
-    def get_settings(self):
-        try:
-            settings = json.loads(requests.request("GET",
-                            "https://api.splinterlands.io/settings",
-                            headers=self._get_headers()
-                            ).text)
-            return settings
-        except Exception as e:
-            logger.exception("error getting settings: "  + repr(e))
-            sys.exit(1)
-
+        self.settings           = settings
 
     def _calculate_bcx_from_card(self, card, cardid):
         logger.debug("Enter calculate_bcx_from_card")
@@ -110,7 +84,7 @@ class MarketCalculator:
 
     def _calculate_bcx_from_cardID(self, cardid):
         logger.debug("Enter calculate_bcx_from_cardID")
-        logger.debug(self.url_card_lookup + str(cardid))
+        logger.debug(api.card_lookup(cardid))
         logger.info("Multi BCX card")
         response = requests.request("GET", self.url_card_lookup + str(cardid), headers=self._get_headers())
         logger.debug(f"response: {response}")
