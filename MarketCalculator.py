@@ -8,7 +8,7 @@ class MarketCalculator:
 
     def __init__(self, buyconfigs, currently_buying, auto_set_buy_price, buypct):
 
-        self.url_card_lookup    = "https://api.splinterlands.io/cards/find?ids="
+        self.url_card_lookup    = "https://api.splinterlands.com/cards/find?ids="
         self.settings           = self.get_settings()
         self.cardsjson          = self.get_cards()
         self.buyconfigs         = buyconfigs
@@ -23,7 +23,7 @@ class MarketCalculator:
     def get_cards(self):
         try:
             cardsjson = json.loads(requests.request("GET",
-                            "https://api.splinterlands.io/cards/get_details",
+                            "https://api.splinterlands.com/cards/get_details",
                             headers=self._get_headers()
                             ).text)
             return cardsjson
@@ -34,7 +34,7 @@ class MarketCalculator:
     def get_settings(self):
         try:
             settings = json.loads(requests.request("GET",
-                            "https://api.splinterlands.io/settings",
+                            "https://api.splinterlands.com/settings",
                             headers=self._get_headers()
                             ).text)
             return settings
@@ -231,7 +231,7 @@ class MarketCalculator:
 
     def check_prices(self):
         logger.debug("Enter check_prices")
-        url_prices = "https://api.splinterlands.io/market/for_sale_grouped"
+        url_prices = "https://api.splinterlands.com/market/for_sale_grouped"
         for buyconfig in self.buyconfigs:
           buyconfig["prices"] = {}
         if self.auto_set_buy_price:

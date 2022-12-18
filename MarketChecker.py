@@ -23,7 +23,7 @@ class MarketChecker:
     def check_buying_result(self, txa) -> None:
         logger.debug("Enter check_buying_result")
         n = 3
-        url_purchase: str = "https://steemmonsters.com/transactions/lookup?trx_id="
+        url_purchase: str = "https://api.splinterlands.com/transactions/lookup?trx_id="
         while n > 0:
             response = requests.request("GET", "".join([url_purchase, txa["trx_id"]]), headers=self._get_headers())
             logger.debug(f"response: {response}")
