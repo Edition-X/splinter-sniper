@@ -9,40 +9,13 @@ class MarketCalculator:
 
     def __init__(self, buyconfigs, currently_buying, auto_set_buy_price, buypct):
 
-        self.url_card_lookup    = "https://api.splinterlands.com/cards/find?ids="
-        self.settings           = self.get_settings()
-        self.cardsjson          = self.get_cards()
+        self.api                = Api()
+        self.settings           = self.api.get_settings()
+        self.cardsjson          = self.api.get_cards()
         self.buyconfigs         = buyconfigs
         self.currently_buying   = currently_buying
         self.auto_set_buy_price = auto_set_buy_price
         self.buypct             = buypct
-
-    def _get_headers(self):
-        return {
-        }
-
-    def get_cards(self):
-        try:
-            cardsjson = json.loads(requests.request("GET",
-                            "https://api.splinterlands.com/cards/get_details",
-                            headers=self._get_headers()
-                            ).text)
-            return cardsjson
-        except Exception as e:
-            logger.exception("error getting cards: "  + repr(e))
-            sys.exit(1)
-
-    def get_settings(self):
-        try:
-            settings = json.loads(requests.request("GET",
-                            "https://api.splinterlands.com/settings",
-                            headers=self._get_headers()
-                            ).text)
-            return settings
-        except Exception as e:
-            logger.exception("error getting settings: "  + repr(e))
-            sys.exit(1)
-
 
     def _calculate_bcx_from_card(self, card, cardid):
         logger.debug("Enter calculate_bcx_from_card")
@@ -110,22 +83,11 @@ class MarketCalculator:
         return bcx
 
     def _calculate_bcx_from_cardID(self, cardid):
-        logger.debug("Enter calculate_bcx_from_cardID")
-        logger.debug(self.url_card_lookup + str(cardid))
-        logger.info("Multi BCX card")
-        response = requests.request("GET", self.url_card_lookup + str(cardid), headers=self._get_headers())
-        logger.debug(f"response: {response}")
-        card = json.loads(str(response.text))[0]
-        logger.debug("card: {card}")
-        logger.debug("Exit calculate_bcx_from_cardID")
+        card = self.api.get_specific_cards(cardid)
         return self._calculate_bcx_from_card(card, cardid)
 
     def _calc_cp_per_usd(self, cardid, price_usd):
-        logger.debug("Enter calc_cp_per_usd")
-        response = requests.request("GET", self.url_card_lookup + str(cardid), headers=self._get_headers())
-        logger.debug(f"response: {response}")
-        card = json.loads(str(response.text))[0]
-        logger.debug("card: {card}")
+        card = self.api.get_specific_cards(cardid)
         bcx = self._calculate_bcx_from_card(card, cardid)
         logger.debug(f"bcx: {bcx}")
         alpha_bcx = 0
@@ -205,12 +167,8 @@ class MarketCalculator:
     def calculate_desired(self, listing, trx_id, price, cardid):
         logger.debug("Enter check_desired")
         if str(listing["cards"])[4] != "-":
-            logger.warning("unable to parse: " + str(listing["cards"])[2:-2] +  ", looking up cardid...")
-            response = requests.request("GET", self.url_card_lookup + (str(listing["cards"])[2:-2]), headers=self._get_headers())
-            card = json.loads(str(response.text))
-            logger.debug(f"card: {card}")
+            card = self.api.get_specific_cards(cardid)
             cardid = str(card[0]["card_detail_id"])
-            logger.debug(f"cardid: {cardid}")
         if len(cardid) > 3:
             raise Exception("skipping card set...")
         for buyconfig in self.buyconfigs:
@@ -238,7 +196,7 @@ class MarketCalculator:
         if self.auto_set_buy_price:
             logger.info("checking prices...")
             try:
-                response = requests.request("GET", url_prices, headers=self._get_headers())
+                response = requests.request("GET", url_prices, headers={})
                 logger.debug(f"response: {response}")
                 cardsjson = json.loads(str(response.text))
                 logger.debug(f"cardsjson: {cardsjson}")
