@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-from SplinterlandsSDK import Api, Card
 from setup_logger import logger
 import json
 import requests
@@ -7,9 +6,9 @@ import sys
 
 class MarketCalculator:
 
-    def __init__(self, buyconfigs, currently_buying, auto_set_buy_price, buypct):
+    def __init__(self, api, buyconfigs, currently_buying, auto_set_buy_price, buypct):
 
-        self.api                = Api()
+        self.api                = api
         self.settings           = self.api.get_settings()
         self.cardsjson          = self.api.get_cards()
         self.buyconfigs         = buyconfigs

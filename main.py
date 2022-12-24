@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from setup_logger import logger
 from setup_hive import HIVE_USERNAME, hive, blockchain
+from SplinterlandsSDK import Api, Card
 from MarketCalculator import MarketCalculator
 from MarketChecker import MarketChecker
 from threading import Thread
@@ -78,7 +79,9 @@ def main():
     currently_selling = []
 
     logger.info("starting...")
-    calculator = MarketCalculator(buyconfigs, currently_buying, auto_set_buy_price, buypct)
+    api = Api()
+
+    calculator = MarketCalculator(api, buyconfigs, currently_buying, auto_set_buy_price, buypct)
     get_cards_to_buy(buyconfigs, calculator.cardsjson)
     calculator.check_prices()
     stream = blockchain.stream()
