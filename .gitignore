@@ -2,7 +2,7 @@
 src
 config.json
 .DS_Store
-logs/*.log
+logs
 .docker
 backupSplintersniper.py
 .envrc
