@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from SplinterlandsSDK import Api, Card
 from setup_logger import logger
 import json
 import requests
