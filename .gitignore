@@ -1,4 +1,5 @@
 # Byte-compiled / optimized / DLL files
+src
 config.json
 .DS_Store
 logs/*.log
