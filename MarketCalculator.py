@@ -188,16 +188,12 @@ class MarketCalculator:
         return False
 
     def check_prices(self):
-        logger.debug("Enter check_prices")
-        url_prices = "https://api.splinterlands.com/market/for_sale_grouped"
         for buyconfig in self.buyconfigs:
           buyconfig["prices"] = {}
         if self.auto_set_buy_price:
             logger.info("checking prices...")
             try:
-                response = requests.request("GET", url_prices, headers={})
-                logger.debug(f"response: {response}")
-                cardsjson = json.loads(str(response.text))
+                cardsjson = self.api.get_for_sale_grouped()
                 logger.debug(f"cardsjson: {cardsjson}")
                 for buyconfig in self.buyconfigs:
                     for card in cardsjson:
