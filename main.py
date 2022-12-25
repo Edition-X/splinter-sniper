@@ -9,7 +9,7 @@ import os
 import json
 import time
 
-
+# test
 def get_config_vars():
     logger.debug("Enter get_config_vars")
     f = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json'))
