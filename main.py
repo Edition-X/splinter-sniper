@@ -27,32 +27,9 @@ def get_config_vars():
 
 def get_cards_to_buy(buyconfigs, cardsjson):
     logger.debug("Enter get_cards_to_buy")
-    rarities = {
-        1: "common",
-        2: "rare",
-        3: "epic",
-        4: "legendary"
-    }
-
-    colors = {
-        "Red": "fire",
-        "Blue": "water",
-        "Green": "earth",
-        "White": "life",
-        "Black": "death",
-        "Gold": "dragon",
-        "Gray": "neutral"
-    }
-
-    editions = {
-        "alpha": 0,
-        "beta": 1,
-        "promo": 2,
-        "reward": 3,
-        "untamed": 4,
-        "dice": 5,
-        "chaos": 7
-    }
+    rarities  = Card.get_rarities()
+    colors = Card.get_colors()
+    editions = Card.get_editions()
     for buyconfig in buyconfigs:
         if(buyconfig["exclude_cl"]):
             cards_tmp = [card for card in cardsjson if rarities[card["rarity"]] in buyconfig["rarities"]
@@ -80,7 +57,6 @@ def main():
 
     logger.info("starting...")
     api = Api()
-
     calculator = MarketCalculator(api, buyconfigs, currently_buying, auto_set_buy_price, buypct)
     get_cards_to_buy(buyconfigs, calculator.cardsjson)
     calculator.check_prices()
