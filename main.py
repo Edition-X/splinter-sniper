@@ -85,7 +85,7 @@ def main():
     get_cards_to_buy(buyconfigs, calculator.cardsjson)
     calculator.check_prices()
     stream = blockchain.stream()
-    checker = MarketChecker(buyconfigs, currently_buying, auto_set_buy_price, sellpct, currently_selling, tip_pct)
+    checker = MarketChecker(api, buyconfigs, currently_buying, auto_set_buy_price, sellpct, currently_selling, tip_pct)
     last_checked = time.time()
     buying_dict = {"block_num": 0, "json_data": {}}
     purchaseOrderFlag = 0
