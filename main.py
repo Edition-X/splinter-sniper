@@ -38,14 +38,12 @@ def get_cards_to_buy(buyconfigs, cardsjson):
     for buyconfig in buyconfigs:
         types_set.update(set(map(str.lower, buyconfig["types"])))
         editions_set.update(set(map(editions.get, buyconfig["editions"])))
-        if(buyconfig["exclude_cl"]):
-            cards_tmp = [card for card in cardsjson if card["rarity"] in rarities_set
-                         and card["color"] in colors_set
-                         and card["type"].lower() in types_set and card["id"] < 330]
-        else:
-            cards_tmp = [card for card in cardsjson if card["rarity"] in rarities_set
-                         and card["color"] in colors_set
-                         and card["type"].lower() in types_set]
+        def card_included(card):
+            if(buyconfig["exclude_cl"]):
+                return card["rarity"] in rarities_set and card["color"] in colors_set and card["type"].lower() in types_set and card["id"] < 330
+            else:
+                return card["rarity"] in rarities_set and card["color"] in colors_set and card["type"].lower() in types_set
+        cards_tmp = list(filter(card_included, cardsjson))
         all_eds = []
         for ed in editions_set:
             current_ed = [str(card["id"]) for card in cards_tmp if ed in card["editions"]]
