@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+import unittest
+import sys
+import os
+import json
+sys.path.insert(0, '..')
+from main import get_config_vars, get_cards_to_buy
+from MarketCalculator import MarketCalculator
+
+class TestCalculateDesired(unittest.TestCase):
+    # def get_config_vars(self):
+    #     f = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../example_config.json'))
+    #     configfile = json.load(f)
+    #     buyconfigs = configfile["buyconfigs"]
+    #     currency = configfile["global_params"]["currency"]
+    #     auto_set_buy_price = configfile["global_params"]["auto_set_buy_price"]
+    #     buypct = configfile["global_params"]["buy_pct_below_market"]
+    #     sellpct = configfile["global_params"]["sell_pct_above_buy"]
+    #     tip_pct = configfile["global_params"]["tip_pct_of_profit"]
+    #     f.close()
+    #     return buyconfigs, currency, auto_set_buy_price, buypct, sellpct, tip_pct
+
+    def test_desired_card(self):
+        buyconfigs, currency, auto_set_buy_price, buypct, sellpct, tip_pct = get_config_vars()
+        # Create a MarketCalculator object
+        obj = MarketCalculator(buyconfigs, [], auto_set_buy_price, buypct)
+        get_cards_to_buy(buyconfigs, obj.cardsjson)
+
+        obj.check_prices()
+
+        # Set the variables needed for the test
+        listing = {'cards': ['C3-332-EO7XTHJ800'], 'currency': 'USD', 'price': 0.016, 'fee_pct': 510}
+        trx_id = "982df69916e95a2011f3417c2eb80078bfeea3bf"
+        price = 0.001
+        cardid = "332"
+
+        # Set the expected output for the test
+        expected_output = True
+
+
+        # Check if the output of the method is as expected
+        self.assertEqual(obj.calculate_desired(listing, trx_id, price, cardid), expected_output)
+
+# Run the tests
+if __name__ == '__main__':
+    unittest.main()
