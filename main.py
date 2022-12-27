@@ -29,24 +29,18 @@ def get_cards_to_buy(buyconfigs, cardsjson):
     rarities  = Card.get_rarities()
     colors = Card.get_colors()
     editions = Card.get_editions()
-    # Create sets for faster membership testing
-    rarities_set = set(rarities.values())
-    colors_set = set(colors.values())
-    types_set = set()
-    editions_set = set()
-    # Pre-process the types and editions lists to create sets
     for buyconfig in buyconfigs:
-        types_set.update(set(map(str.lower, buyconfig["types"])))
-        editions_set.update(set(map(editions.get, buyconfig["editions"])))
-        def card_included(card):
-            if(buyconfig["exclude_cl"]):
-                return card["rarity"] in rarities_set and card["color"] in colors_set and card["type"].lower() in types_set and card["id"] < 330
-            else:
-                return card["rarity"] in rarities_set and card["color"] in colors_set and card["type"].lower() in types_set
-        cards_tmp = list(filter(card_included, cardsjson))
+        if(buyconfig["exclude_cl"]):
+            cards_tmp = [card for card in cardsjson if rarities[card["rarity"]] in buyconfig["rarities"]
+                         and colors[str(card["color"])] in buyconfig["elements"]
+                         and str(card["type"]).lower() in str(buyconfig["types"]).lower() and int(card["id"]) < 330]
+        else:
+            cards_tmp = [card for card in cardsjson if rarities[card["rarity"]] in buyconfig["rarities"]
+                         and colors[str(card["color"])] in buyconfig["elements"]
+                         and str(card["type"]).lower() in str(buyconfig["types"]).lower()]
         all_eds = []
-        for ed in editions_set:
-            current_ed = [str(card["id"]) for card in cards_tmp if ed in card["editions"]]
+        for ed in buyconfig["editions"]:
+            current_ed = [str(card["id"]) for card in cards_tmp if str(editions[str(ed)]) in card["editions"]]
             all_eds = all_eds + current_ed
         if len(buyconfig["cards"]) == 0:
             buyconfig["cards"] = all_eds

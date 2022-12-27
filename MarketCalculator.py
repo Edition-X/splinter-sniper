@@ -170,7 +170,11 @@ class MarketCalculator:
             cardid = str(card[0]["card_detail_id"])
         if len(cardid) > 3:
             raise Exception("skipping card set...")
-        for buyconfig in self.buyconfigs:
+
+        # Create a set of desired cardids and the corresponding buyconfig indices
+        desired_cardids = set()
+        desired_buyconfig_indices = set()
+        for idx, buyconfig in enumerate(self.buyconfigs):
             if ((float(buyconfig["max_quantity"]) > 0)
             and (cardid in buyconfig["cards"])
             and (price <= float(buyconfig["prices"][cardid]))
@@ -179,13 +183,20 @@ class MarketCalculator:
             and (buyconfig["min_bcx"] == 0 or self._calculate_bcx_from_cardID(str(listing["cards"])[2:-2]) >= buyconfig["min_bcx"])
             and (buyconfig["min_cp_per_usd"] == 0 or self._calc_cp_per_usd(str(listing["cards"])[2:-2], price) >= buyconfig["min_cp_per_usd"])):
                 buyconfig["max_quantity"] = buyconfig["max_quantity"] - 1
-                self.currently_buying.append({"id": trx_id, "buyconfig_idx": self.buyconfigs.index(buyconfig), "cardid": str(listing["cards"])[2:-2], "price": str(price)})
-                logger.info("Card ID: " + cardid + " IS desired at $" + str(price))
-                logger.debug("Exit check_desired")
-                return True
+                desired_cardids.add(cardid)
+                desired_buyconfig_indices.add(idx)
+
+        # Check if the current card is desired
+        if cardid in desired_cardids:
+            # Use the index stored in desired_buyconfig_indices to reference the correct buyconfig
+            self.currently_buying.append({"id": trx_id, "buyconfig_idx": list(desired_buyconfig_indices)[0], "cardid": str(listing["cards"])[2:-2], "price": str(price)})
+            logger.info("Card ID: " + cardid + " IS desired at $" + str(price))
+            logger.debug("Exit check_desired")
+            return True
         logger.debug("Card ID: " + cardid + " is not desired at $" + str(price))
         logger.debug("Exit check_desired")
         return False
+
 
     def check_prices(self):
         for buyconfig in self.buyconfigs:
