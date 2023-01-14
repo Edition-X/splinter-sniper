@@ -8,6 +8,7 @@ from threading import Thread
 import os
 import json
 import time
+import argparse
 
 # test
 def get_config_vars():
@@ -47,12 +48,26 @@ def get_cards_to_buy(buyconfigs, cardsjson):
     logger.debug("Exit get_cards_to_buy")
     return
 
+def check_dry_run():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--dry-run", action="store_true", help="Dry run mode")
+    args = parser.parse_args()
+
+    dry_run = 0
+    if args.dry_run:
+        dry_run = 1
+        # Create the file for storing transactions
+        with open("dry_run_transactions.txt", "w") as f:
+            f.write("Dry Run Transactions:\n")
+
+    return dry_run
+
 def main():
     # Get configuration variables from config.json
     buyconfigs, currency, auto_set_buy_price, buypct, sellpct, tip_pct = get_config_vars()
     currently_buying = []
     currently_selling = []
-
+    dry_run = check_dry_run()
     logger.info("starting...")
     api = Api()
     calculator = MarketCalculator(api, buyconfigs, currently_buying, auto_set_buy_price, buypct)
