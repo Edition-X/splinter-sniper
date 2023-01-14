@@ -82,7 +82,11 @@ def main():
         newBlock = op["block_num"] - buying_dict["block_num"]
         if buying_dict["block_num"] != 0:
             if newBlock >= 3 and purchaseOrderFlag == 0:
-                hive.custom_json('sm_market_purchase', json_data=buying_dict["json_data"],
+                if dry_run:
+                    with open("dry_run_transactions.txt", "w") as f:
+                        f.write(f"purchase data: {buying_dict['json_data']}\n")
+                else:
+                    hive.custom_json('sm_market_purchase', json_data=buying_dict["json_data"],
                                  required_auths=[HIVE_USERNAME])
                 purchaseOrderFlag = 1
 
@@ -121,7 +125,7 @@ def main():
             else:
                 if(len(currently_buying) > 0 and HIVE_USERNAME in op["required_auths"]):
                     try:
-                        t = Thread(target=checker.check_buying_result(op))
+                        t = Thread(target=checker.check_buying_result(op, dry_run))
                         t.start()
                     except Exception as e:
                         logger.exception("error occured while buying: " + repr(e))

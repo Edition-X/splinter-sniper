@@ -20,7 +20,7 @@ class MarketChecker:
         return {
         }
 
-    def check_buying_result(self, txa) -> None:
+    def check_buying_result(self, txa, dry_run) -> None:
         logger.debug("Enter check_buying_result")
         n = 3
         while n > 0:
@@ -42,7 +42,11 @@ class MarketChecker:
                       logger.debug(f"new_price: {new_price}")
                       jsondata = '{"cards":["' + str(buy["cardid"]) + '"],"currency":"USD","price":' + str(new_price) +',"fee_pct":500}'
                       logger.debug(f"jsondata: {jsondata}")
-                      hive.custom_json('sm_sell_cards', json_data=jsondata, required_auths=[HIVE_USERNAME])
+                      if dry_run:
+                          with open("dry_run_transactions.txt", "w") as f:
+                              f.write(f"selling data: {jsondata}\n")
+                      else:
+                        hive.custom_json('sm_sell_cards', json_data=jsondata, required_auths=[HIVE_USERNAME])
                       logger.info("selling " + str(buy["cardid"]) + " for " + str(new_price) + "$")
                       self.currently_selling.append(str(buy["cardid"]))
                     elif self.buyconfigs[buy["buyconfig_idx"]]["sell_for_pct_more"] > 0:
