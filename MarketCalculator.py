@@ -24,7 +24,7 @@ class MarketCalculator:
         if alpha_xp in card:
             alpha_xp = card["alpha_xp"]
             logger.debug(f"alpha_xp: {alpha_xp}")
-        xp = max(card["xp"] - alpha_xp, 0)
+        xp = max(card[0]["xp"] - alpha_xp, 0)
         logger.debug(f"xp: {xp}")
         burn_rate = self.settings["dec"]["burn_rate"][card["details"]["rarity"] - 1]
         logger.debug(f"burn_rate: {burn_rate}")
