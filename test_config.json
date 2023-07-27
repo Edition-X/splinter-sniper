@@ -1,0 +1,101 @@
+{
+    "global_params": {
+        "currency": "DEC",
+        "auto_set_buy_price": true,
+        "buy_pct_below_market": 5,
+        "sell_pct_above_buy": 20,
+        "tip_pct_of_profit": 0
+    },
+    "buyconfigs": [
+        {
+            "comment": "all cards, under $5",
+            "cards": [],
+            "editions": ["alpha", "beta", "promo", "reward", "untamed", "dice", "chaos"],
+            "rarities": ["common", "rare", "epic", "legendary"],
+            "elements": ["fire", "water", "earth", "death", "life", "dragon", "neutral"],
+            "types": ["summoner", "monster"],
+            "min_bcx": 0,
+            "min_cp_per_usd": 0,
+            "max_price": 5,
+            "max_quantity": 1,
+            "gold_only": false,
+            "exclude_cl": false,
+            "sell_for_pct_more": 20
+        },
+        {
+            "comment": "Lorna Shine lvl 4",
+            "cards": [261],
+            "editions": [],
+            "rarities": [],
+            "elements": [],
+            "types": [],
+            "min_bcx": 25,
+            "min_cp_per_usd": 0,
+            "max_price": 100,
+            "max_quantity": 1,
+            "gold_only": false,
+            "exclude_cl": false,
+            "sell_for_pct_more": 0
+        },
+        {
+            "comment": "Untamed & Dice Commons lvl 5",
+            "cards": [],
+            "editions": ["untamed", "dice"],
+            "rarities": ["common"],
+            "elements": ["fire", "water", "earth", "death", "life", "dragon", "neutral"],
+            "types": ["summoner", "monster"],
+            "min_bcx": 60,
+            "min_cp_per_usd": 0,
+            "max_price": 50,
+            "max_quantity": 5,
+            "gold_only": false,
+            "exclude_cl": false,
+            "sell_for_pct_more": 0
+        },
+        {
+            "comment": "Untamed & Dice Rare lvl 4",
+            "cards": [],
+            "editions": ["untamed", "dice"],
+            "rarities": ["rare"],
+            "elements": ["fire", "water", "earth", "death", "life", "dragon", "neutral"],
+            "types": ["summoner", "monster"],
+            "min_bcx": 25,
+            "min_cp_per_usd": 0,
+            "max_price": 100,
+            "max_quantity": 4,
+            "gold_only": false,
+            "exclude_cl": false,
+            "sell_for_pct_more": 0
+        },
+        {
+            "comment": "Untamed & Dice Epic lvl 3",
+            "cards": [],
+            "editions": ["untamed", "dice"],
+            "rarities": ["epic"],
+            "elements": ["fire", "water", "earth", "death", "life", "dragon", "neutral"],
+            "types": ["summoner", "monster"],
+            "min_bcx": 10,
+            "min_cp_per_usd": 0,
+            "max_price": 150,
+            "max_quantity": 3,
+            "gold_only": false,
+            "exclude_cl": false,
+            "sell_for_pct_more": 0
+        },
+        {
+            "comment": "Untamed & Dice Ledgendary lvl 2",
+            "cards": [],
+            "editions": ["untamed", "dice"],
+            "rarities": ["epic"],
+            "elements": ["fire", "water", "earth", "death", "life", "dragon", "neutral"],
+            "types": ["summoner", "monster"],
+            "min_bcx": 3,
+            "min_cp_per_usd": 0,
+            "max_price": 180,
+            "max_quantity": 2,
+            "gold_only": false,
+            "exclude_cl": false,
+            "sell_for_pct_more": 0
+        }
+    ]
+}

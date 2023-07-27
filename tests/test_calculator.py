@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import unittest
 import sys
+from types import SimpleNamespace
 sys.path.insert(0, '..')
 from main import get_config_vars, get_cards_to_buy
 from SplinterlandsSDK import Api
@@ -8,7 +9,8 @@ from MarketCalculator import MarketCalculator
 
 class TestCalculateDesired(unittest.TestCase):
     def test_desired_card(self):
-        buyconfigs, _, auto_set_buy_price, buypct, _, _ = get_config_vars()
+        args = SimpleNamespace(config='test_config.json')
+        buyconfigs, _, auto_set_buy_price, buypct, _, _ = get_config_vars(args)
         api = Api()
         # Create a MarketCalculator object
         obj = MarketCalculator(api, buyconfigs, [], auto_set_buy_price, buypct)

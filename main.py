@@ -10,19 +10,34 @@ import json
 import time
 import argparse
 
-# test
-def get_config_vars():
+def get_cli_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=str, help="Path to the configuration file")
+    parser.add_argument("--dry-run", action="store_true", help="Dry run mode")
+    args = parser.parse_args()
+
+    return args
+
+def get_config_vars(args):
     logger.debug("Enter get_config_vars")
-    f = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json'))
-    configfile = json.load(f)
+
+    if args.config:
+        config_file_path = args.config
+    else:
+        config_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json')
+
+    with open(config_file_path) as f:
+        configfile = json.load(f)
+
     buyconfigs = configfile["buyconfigs"]
     currency = configfile["global_params"]["currency"]
     auto_set_buy_price = configfile["global_params"]["auto_set_buy_price"]
     buypct = configfile["global_params"]["buy_pct_below_market"]
     sellpct = configfile["global_params"]["sell_pct_above_buy"]
     tip_pct = configfile["global_params"]["tip_pct_of_profit"]
-    f.close()
+
     logger.debug("Exit get_config_vars")
+
     return buyconfigs, currency, auto_set_buy_price, buypct, sellpct, tip_pct
 
 def get_cards_to_buy(buyconfigs, cardsjson):
@@ -48,11 +63,7 @@ def get_cards_to_buy(buyconfigs, cardsjson):
     logger.debug("Exit get_cards_to_buy")
     return
 
-def check_dry_run():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--dry-run", action="store_true", help="Dry run mode")
-    args = parser.parse_args()
-
+def check_dry_run(args):
     dry_run = 0
     if args.dry_run:
         dry_run = 1
@@ -63,11 +74,11 @@ def check_dry_run():
     return dry_run
 
 def main():
-    # Get configuration variables from config.json
-    buyconfigs, currency, auto_set_buy_price, buypct, sellpct, tip_pct = get_config_vars()
+    args = get_cli_args()
+    buyconfigs, currency, auto_set_buy_price, buypct, sellpct, tip_pct = get_config_vars(args)
     currently_buying = []
     currently_selling = []
-    dry_run = check_dry_run()
+    dry_run = check_dry_run(args)
     logger.info("starting...")
     api = Api()
     calculator = MarketCalculator(api, buyconfigs, currently_buying, auto_set_buy_price, buypct)
@@ -108,7 +119,8 @@ def main():
                         listings.append(json.loads(op["json"]))
                     for index, listing in enumerate(listings):
                         price = float(listing["price"])
-                        cardid = str(listing["cards"])[5:-13]
+                        # cardid = str(listing["cards"])[5:-13]
+                        cardid = str(listing["cards"][0].split('-')[1])
                         if (calculator.calculate_desired(listing, op["trx_id"] + "-" + str(index), price, cardid) == True):
                             id = op["trx_id"]
                             jsondata_old = '{"items":["' + str(id) + '-' + str(index) + '"], "price":' + str(
